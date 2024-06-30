@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import ar.edu.unlam.pb2.enums.Colores;
@@ -36,12 +37,12 @@ public class FabricaDeCopasDelMundo {
 	}
 
 	public Boolean agregarCliente(Cliente cliente) throws ClienteDuplicadoException {
-		for (Cliente clientes : clientes) {
+		for (Cliente clientes : clienteVenta) {
 			if (clientes.getDni().equals(cliente.getDni())) {
 				throw new ClienteDuplicadoException();
 			}
 		}
-		return clientes.add(cliente);
+		return clienteVenta.add(cliente);
 	}
 
 	public List<CopaDelMundo> obtenerCopasDelMundoEstandar() {
@@ -71,13 +72,13 @@ public class FabricaDeCopasDelMundo {
 
 	public void crearVenta(Cliente cliente, CopaDelMundo copa) {
 		Venta venta = new Venta();
-		if(venta.getVentasRealizadas()== true) {
+		venta.setVentasRealizadas(true);
+		if (venta.getVentasRealizadas()) {
 			venta.getCopasDelMundo().add(copa);
-			venta.setCliente(cliente);	
-				ventas.add(venta); 
-			}
+			venta.setCliente(cliente);
+			ventas.add(venta);
+		}
 	}
-	
 
 	public void agregarCopaDelMundoEstandarAVentaDeCliente(Cliente clienteDeVenta, Long idCopaDelMundo,
 			Integer cantidadAVender) //throws CopaDelMundoNoEncontradaException 
@@ -105,22 +106,29 @@ public class FabricaDeCopasDelMundo {
 		return copa.calcularPrecioEspecifico();
 	}
 
-	public void obtenerClienteYCopasPorVenta(Venta venta) {
-		Map<Cliente,List<copas>> mapaClienteCopas;		
-		for (Venta v : ventas) {
-			if(v.equals(venta));
-			
-			return  mapaClienteCopas;
-		}
-	}
-//crear metodo que instancia objeto venta contiene un cliente y una lista de copas
-	// y ademas el objeto venta crerado agregarlo a la lista ventas .add (venta)
+
+
 	public Map<Cliente, Double> obtenerTotalDePrecioDeCopasDelMundoEstandarVendidasAClientesOrdenadasPorCliente() {
-		Map<Cliente, Double>totalPorCliente = new HashMap<>();
-		Set<Cliente> clientes = new HashSet<Cliente> ();
+		Map<Cliente, Double> totalPorCliente = new HashMap<>();
 		
-		//for ventas, if cliente dni == cliente que esta en el m,apa, 
-		totalPorCliente.put(cliente,)
+		Double precioTemporalCopa = 0.00;
+		
+		for (Venta venta : this.ventas) {
+			Cliente clienteVenta = venta.getCliente();
+			Double precioCopaDouble = venta.getCopasDelMundo().get(0).getPrecio();
+			precioTemporalCopa = precioTemporalCopa+precioCopaDouble;
+			
+			if(totalPorCliente.isEmpty()) {
+				totalPorCliente.put(clienteVenta, precioTemporalCopa);
+			} else {
+				if(totalPorCliente.containsKey(clienteVenta)){
+					totalPorCliente.put(clienteVenta, precioTemporalCopa);
+				}
+			}
+			
+		}
+		
+	//	Map<Cliente, Double> mapaOrdenado = new TreeMap<Cliente, Double>(totalPorCliente);
 		return totalPorCliente;
 	}
 
