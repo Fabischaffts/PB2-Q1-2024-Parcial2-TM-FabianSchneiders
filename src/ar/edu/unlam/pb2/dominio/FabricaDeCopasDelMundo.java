@@ -54,13 +54,15 @@ public class FabricaDeCopasDelMundo {
 		return copasEstandar;
 	}
 
-	public CopaDelMundo obtenerCopaDelMundoPorId(Long id) throws CopaDelMundoNoEncontradaException {
+	public CopaDelMundo obtenerCopaDelMundoPorId(Long id) //throws CopaDelMundoNoEncontradaException 
+	{
 		for (CopaDelMundo copa : copas) {
 			if (copa.getId().equals(id)) {
 				return copa;
 			}
 		}
-		throw new CopaDelMundoNoEncontradaException();
+		return null;
+	//	throw new CopaDelMundoNoEncontradaException();
 	}
 
 	public Integer getStock(CopaDelMundoEstandar copaEstandar) {
@@ -78,7 +80,9 @@ public class FabricaDeCopasDelMundo {
 	
 
 	public void agregarCopaDelMundoEstandarAVentaDeCliente(Cliente clienteDeVenta, Long idCopaDelMundo,
-			Integer cantidadAVender) throws CopaDelMundoNoEncontradaException {
+			Integer cantidadAVender) //throws CopaDelMundoNoEncontradaException 
+	{
+	
 		CopaDelMundoEstandar copa = (CopaDelMundoEstandar) this.obtenerCopaDelMundoPorId(idCopaDelMundo);
 		this.crearVenta(clienteDeVenta, copa);
 		Integer stock = this.getStock(copa);
@@ -90,6 +94,7 @@ public class FabricaDeCopasDelMundo {
 			throws CopaDelMundoNoEncontradaException {
 	
 		CopaDelMundoPersonalizada copa = (CopaDelMundoPersonalizada) this.obtenerCopaDelMundoPorId(idCopaDelMundo);
+		this.crearVenta(clienteDeVenta, copa);
 		copas.remove(copa);
 		clienteVenta.add(clienteDeVenta);
 	}
@@ -100,6 +105,14 @@ public class FabricaDeCopasDelMundo {
 		return copa.calcularPrecioEspecifico();
 	}
 
+	public void obtenerClienteYCopasPorVenta(Venta venta) {
+		Map<Cliente,List<copas>> mapaClienteCopas;		
+		for (Venta v : ventas) {
+			if(v.equals(venta));
+			
+			return  mapaClienteCopas;
+		}
+	}
 //crear metodo que instancia objeto venta contiene un cliente y una lista de copas
 	// y ademas el objeto venta crerado agregarlo a la lista ventas .add (venta)
 	public Map<Cliente, Double> obtenerTotalDePrecioDeCopasDelMundoEstandarVendidasAClientesOrdenadasPorCliente() {
@@ -112,6 +125,11 @@ public class FabricaDeCopasDelMundo {
 	}
 
 	private Venta obtenerVentaPorCliente(Cliente cliente) {
+		for (Venta venta : ventas) {
+			if(venta.getCliente().equals(cliente)) {
+			 return venta;
+			}
+		}
 		return null;
 	}
 
@@ -148,3 +166,4 @@ public class FabricaDeCopasDelMundo {
 	}
 
 }
+

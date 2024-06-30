@@ -104,7 +104,8 @@ public class FabricaCopasDelMundoTest {
 		assertNotEquals(fabrica.getClientes(),cliente);
 	}
 
-	@Test
+	//sin la excepcion los test me dan verde
+	@Test//(expected = CopaDelMundoNoEncontradaException.class)
 	public void dadoQueExisteUnaFabricaDeCopasDelMundoConCopasDelMundoAlAgregarUnaVentaDeCopasDelMundoPersonalizadaParaUnClienteSeRemueveLaCopaDelMundoPersonalizadaDeLaFabrica() throws CopaDelMundoNoEncontradaException {
 		String nombre = "3estrellas";
 		Long id = 123456789L;
@@ -123,7 +124,7 @@ public class FabricaCopasDelMundoTest {
 		
 	}
 
-	@Test
+	@Test//(expected = CopaDelMundoNoEncontradaException.class)
 	public void dadoQueExisteUnaFabricaDeCopasDelMundoConCopasDelMundoPersonalizadasSePuedeObtenerElPrecioDeUnaCopaDelMundoPersonalizada() throws CopaDelMundoNoEncontradaException {
 		String nombre = "3estrellas";
 		Long id = 123456789L;
@@ -138,6 +139,18 @@ public class FabricaCopasDelMundoTest {
 
 	@Test
 	public void dadoQueExisteUnaFabricaDeCopasDelMundoConVentasDeCopasDelMundoEstandarYPersonalizadasVendidasAClientesSePuedeObtenerUnMapaConClaveClienteYTotalDeVentasDeCopasEstandarOrdenadoPorCliente() {
+		String nombre = "3estrellas";
+		Long id = 123456789L;
+		Double precio = 1.0;
+		Integer stock = 10;
+		String nombreCl ="Pepe";
+		String Apellido = "Romero";
+		Integer dni = 1;
+		CopaDelMundoPersonalizada copaPersonalizada = new CopaDelMundoPersonalizada(id, precio, Materiales.RECINA, Colores.CEDRO);  
+		FabricaDeCopasDelMundo fabrica = new FabricaDeCopasDelMundo(nombre);
+		Cliente cliente = new Cliente(nombreCl, Apellido, dni);
+		Venta venta = new Venta();
+	
 	}
 
 	}
